@@ -17,12 +17,12 @@ class Post extends Model
         'content'
     ];
 
-    public function category(): BelongsTo
+    public function post_category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
 
-    public function user(): BelongsTo
+    public function post_user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

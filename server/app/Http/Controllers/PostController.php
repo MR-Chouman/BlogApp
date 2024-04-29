@@ -43,6 +43,9 @@ class PostController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
+        $post = Post::create($request->validated());
+
+        return response()->json($post, 201);
 
     }
 

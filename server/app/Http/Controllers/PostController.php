@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -35,6 +36,14 @@ class PostController extends Controller
             'category_id' => 'required|integer|exists:categories,id',
             'user_id' => 'required|integer|exists:users,id',
         ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+
     }
 
     /**

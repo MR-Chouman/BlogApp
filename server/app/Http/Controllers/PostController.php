@@ -13,8 +13,8 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = Post::all();
-        return json_encode($posts);
+        $posts = Post::with('user', 'category')->get();
+        return response()->json($posts);
     }
 
     /**
@@ -34,7 +34,6 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'category_id' => 'required|integer|exists:categories,id',
-            'user_id' => 'required|integer|exists:users,id',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -43,7 +42,12 @@ class PostController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $post = Post::create($request->validated());
+        $post = Post::create([
+            'title' => $request->title,
+            'content' => $request->content,
+            'user_id' => auth()->id(),
+            'category_id' => $request->category_id
+        ]);
 
         return response()->json($post, 201);
 

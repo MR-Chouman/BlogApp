@@ -4,14 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $posts = Post::all();
         return json_encode($posts);
@@ -30,7 +29,12 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'category_id' => 'required|integer|exists:categories,id',
+            'user_id' => 'required|integer|exists:users,id',
+        ];
     }
 
     /**
